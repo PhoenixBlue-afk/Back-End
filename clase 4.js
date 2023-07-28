@@ -9,13 +9,17 @@ class Product {
     }
   
     generateCode() {
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      const codeLength = 8;
-      let code = '';
-      for (let i = 0; i < codeLength; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        code += characters[randomIndex];
-      }
+      // const characters = '0123456789';
+      // const codeLength = 8;
+      let code= 1
+      products.forEach(e => {
+        e.code = code
+        code++
+      });
+      // for (let i = 0; i < codeLength; i++) {
+      //   const randomIndex = Math.floor(Math.random() * characters.length);
+      //   code += characters[randomIndex];
+      // }
       return code;
     }
   
@@ -24,7 +28,11 @@ class Product {
     }
   
     addProduct(products, title, description, price, thumbnail, code, stock) {
-      code = code || this.generateCode();
+      if (code === '') {
+        code = this.generateCode();
+      }else{
+        code = code
+      }
   
       if (!this.isCodeUnique(code, products)) {
         throw new Error('El código proporcionado ya existe.');
@@ -66,11 +74,19 @@ class Product {
     }
   }
   
-  const products = [];
+  let products = [];
   const productInstance = new Product();
-  productInstance.addProduct(products, 'Producto 1', 'Descripción del producto 1', 20, 'imagen1.jpg', 1,100);
-  const deleteResult = productInstance.deleteProduct(products, 1);
+  productInstance.addProduct(products, 'Producto 1', 'Descripción del producto 1', 20, 'imagen1.jpg', null,100);
+  productInstance.addProduct(products, 'Producto 2', 'Descripción del producto 2', 40, 'imagen2.jpg', null,200);
+  productInstance.addProduct(products, 'Producto 3', 'Descripción del producto 3', 60, 'imagen1.jpg', null,300);
+
+  // const deleteResult = productInstance.deleteProduct(products, 1);
   
   console.log(productInstance.getAllProducts());
-  console.log(productInstance.getProductByCode(1));
-console.log(deleteResult);
+  console.log(productInstance.getProductByCode(''));
+// console.log(deleteResult);
+console.log(products);
+module.exports = {
+  Product,
+  products,
+};
